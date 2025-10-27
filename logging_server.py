@@ -4,6 +4,7 @@ Logging server on port 4002 that receives and displays logs.
 
 import logging
 from datetime import datetime
+from time import sleep
 
 import uvicorn
 from fastapi import FastAPI
@@ -53,6 +54,7 @@ async def receive_log(log: LogMessage):
     Receive and display log messages.
     Prints to terminal with timestamp.
     """
+    sleep(2) # Simulate processing delay
     logger.info(f"[{log.server_name}] {log.message}")
     return {"status": "logged"}
 

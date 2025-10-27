@@ -32,11 +32,13 @@ class RemoteLogger:
                         },
                     )
             except Exception as e:
-                print(f"Logging failed: {e}")
+                # ロギングに失敗しても何もしない（要求仕様）
+                pass
 
         try:
             asyncio.get_running_loop().create_task(_send())
         except RuntimeError:
             # イベントループがない環境では黙って捨てる（要求仕様）
             pass
+
 
