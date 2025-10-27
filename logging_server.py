@@ -1,19 +1,23 @@
 """
 Logging server on port 4002 that receives and displays logs.
 """
-from fastapi import FastAPI
 
-from datetime import datetime
-import uvicorn
-from remote_logger import LogMessage
 import logging
+from datetime import datetime
+
+import uvicorn
+from fastapi import FastAPI
 from pytz import timezone
 from rich.logging import RichHandler
 
+from remote_logger import LogMessage
+
 app = FastAPI(title="Logging Server")
+
 
 def _custom_time(*args):
     return datetime.now(timezone("Asia/Tokyo")).timetuple()
+
 
 def init_logger():
     """Initialize a custom logger that prints to terminal."""
@@ -21,8 +25,7 @@ def init_logger():
     logger.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter(
-        "\n%(asctime)s %(message)s",
-        datefmt='%Y/%m/%d %H:%M:%S'
+        "\n%(asctime)s %(message)s", datefmt="%Y/%m/%d %H:%M:%S"
     )
 
     formatter.converter = _custom_time
@@ -40,7 +43,9 @@ def init_logger():
 
     return logger
 
+
 logger = init_logger()
+
 
 @app.post("/log")
 async def receive_log(log: LogMessage):
@@ -55,10 +60,7 @@ async def receive_log(log: LogMessage):
 @app.get("/")
 async def root():
     """Root endpoint with usage information."""
-    return {
-        "message": "Logging Server",
-        "usage": "POST /log - Receive log messages"
-    }
+    return {"message": "Logging Server", "usage": "POST /log - Receive log messages"}
 
 
 if __name__ == "__main__":

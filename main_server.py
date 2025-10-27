@@ -2,19 +2,20 @@
 Interactive server on port 4001 that computes square (n^2) for a given integer.
 Logs requests to the logging server on port 4002.
 """
+
 import asyncio
+
 from remote_logger import RemoteLogger
 
-
 LOGGING_SERVER_URL = "http://localhost:4002/log"
-remote_logger = RemoteLogger(endpoint=LOGGING_SERVER_URL, server_name="InteractiveServer")
-
-
+remote_logger = RemoteLogger(
+    endpoint=LOGGING_SERVER_URL, server_name="InteractiveServer"
+)
 
 
 async def calculate_square(number: int) -> int:
     """Calculate n^2 for a given integer."""
-    result = number ** 2
+    result = number**2
     remote_logger.log(f"Calculated square for {number}: {result}")
     return result
 
@@ -30,7 +31,9 @@ async def main():
     while True:
         try:
             # 入力は別スレッドで実行し、イベントループを止めない
-            user_input = await asyncio.to_thread(lambda: input("\nEnter a number: ").strip())
+            user_input = await asyncio.to_thread(
+                lambda: input("\nEnter a number: ").strip()
+            )
             if user_input.lower() in {"quit", "exit", "q"}:
                 print("Goodbye!")
                 break

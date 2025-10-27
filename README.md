@@ -24,18 +24,18 @@ This project consists of three main components:
 ## Installation
 
 1. Clone the repository:
-```bash
+```shell
 git clone https://github.com/gokamoda/multi-server-logging.git
 cd multi-server-logging
 ```
 
 2. Install dependencies using pip:
-```bash
+```shell
 pip install fastapi uvicorn httpx rich pytz
 ```
 
 Or using uv (recommended):
-```bash
+```shell
 uv pip install -e .
 ```
 
@@ -45,7 +45,7 @@ You need to run both servers in separate terminal windows.
 
 ### Terminal 1: Start the Logging Server (Port 4002)
 
-```bash
+```shell
 python logging_server.py
 ```
 
@@ -53,7 +53,7 @@ The logging server will start on `http://localhost:4002` and display received lo
 
 ### Terminal 2: Start the Interactive Square Calculator (Port 4001)
 
-```bash
+```shell
 python main_server.py
 ```
 
@@ -65,7 +65,7 @@ The calculator will start in interactive mode, prompting you to enter integers.
 
 Once the main server is running, you'll see:
 
-```
+```shell
 Square Calculator (Interactive Mode)
 ==================================================
 Enter integers to calculate n^2
@@ -85,7 +85,8 @@ Goodbye!
 ### Logging Output (Terminal 1 - logging_server.py)
 
 You should see log entries with timestamps in colorful format:
-```
+
+```shell
 2025/10/27 14:22:30 [InteractiveServer] Calculated square for 5: 25
 
 2025/10/27 14:22:35 [InteractiveServer] Calculated square for 10: 100
@@ -155,24 +156,8 @@ multi-server-logging/
 
 ## Development
 
-### Running Tests
-
-```bash
-pytest
-```
-
 ### Linting
 
-```bash
-ruff check .
+```shell
+source scripts/ruff.sh
 ```
-
-### Type Checking
-
-```bash
-mypy .
-```
-
-## License
-
-This project is open source and available for educational purposes.
