@@ -1,21 +1,20 @@
 # multi-server-logging
 
-A multi-server application using FastAPI that demonstrates inter-server communication and logging.
+A multi-server application that demonstrates inter-server communication and logging.
 
 ## Overview
 
-This project consists of two FastAPI servers:
+This project consists of two components:
 
-1. **Server 4001 (Power of 2 Server)**: An interactive server that receives an integer and returns its power of 2 (number squared). Before returning the result, it sends a log request to the logging server.
+1. **Server 4001 (Power of 2 Calculator)**: An interactive terminal application that prompts users to enter integers and calculates their power of 2 (number squared). Before returning the result, it sends a non-blocking log request to the logging server.
 
-2. **Server 4002 (Logging Server)**: A logging server that receives log messages and displays them in the terminal with timestamps.
+2. **Server 4002 (Logging Server)**: A FastAPI logging server that receives log messages and displays them in the terminal with timestamps.
 
 ## Requirements
 
 - Python 3.7+
-- FastAPI
-- Uvicorn
-- HTTPX
+- HTTPX (for server 4001)
+- FastAPI and Uvicorn (for server 4002)
 
 ## Installation
 
@@ -42,48 +41,53 @@ python server_4002.py
 
 The logging server will start on `http://localhost:4002` and display received logs in the terminal.
 
-### Terminal 2: Start the Power of 2 Server (Port 4001)
+### Terminal 2: Start the Interactive Power Calculator
 
 ```bash
 python server_4001.py
 ```
 
-The power server will start on `http://localhost:4001`.
+The calculator will start in interactive mode, prompting you to enter integers.
 
 ## Usage
 
-Once both servers are running, you can make requests to the power server:
+### Interactive Mode (Terminal 2)
 
-### Using curl:
-```bash
-curl http://localhost:4001/power/5
+Once server_4001.py is running, you'll see:
+
 ```
+Power of 2 Calculator (Interactive Mode)
+==================================================
+Enter integers to calculate their power of 2 (number^2)
+Type 'quit' or 'exit' to stop
+==================================================
 
-### Using a web browser:
-Navigate to: `http://localhost:4001/power/5`
+Enter a number: 5
+Result: 5^2 = 25
 
-### Expected Response:
-```json
-{
-  "number": 5,
-  "power_of_2": 25
-}
+Enter a number: 10
+Result: 10^2 = 100
+
+Enter a number: quit
+Goodbye!
 ```
 
 ### In Terminal 1 (Logging Server):
-You should see a log entry like:
+
+You should see log entries with timestamps:
 ```
-[2025-10-27 13:57:58] Calculated power of 2 for number: 5, result: 25
+[2025-10-27 14:22:30] Calculated power of 2 for number: 5, result: 25
+[2025-10-27 14:22:35] Calculated power of 2 for number: 10, result: 100
 ```
+
+## Features
+
+- **Interactive Terminal UI**: Direct input/output in the terminal for quick calculations
+- **Non-blocking Logging**: Uses fire-and-forget pattern to avoid blocking the calculator
+- **Timestamped Logs**: All calculations are logged with timestamps to the logging server
+- **Error Handling**: Gracefully handles invalid inputs and network errors
 
 ## API Documentation
-
-### Server 4001 (Power of 2)
-
-- **GET /**: Root endpoint with usage information
-- **GET /power/{number}**: Calculate the power of 2 for the given integer
-  - Parameters: `number` (integer)
-  - Returns: JSON with the number and its power of 2
 
 ### Server 4002 (Logging)
 
@@ -92,9 +96,8 @@ You should see a log entry like:
   - Body: JSON with `message` field
   - Returns: JSON with status and timestamp
 
-## Interactive API Documentation
+### Interactive API Documentation
 
-FastAPI provides automatic interactive API documentation:
+FastAPI provides automatic interactive API documentation for the logging server:
 
-- Server 4001: http://localhost:4001/docs
 - Server 4002: http://localhost:4002/docs
