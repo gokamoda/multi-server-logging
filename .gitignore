@@ -45,3 +45,4 @@ htmlcov/
 uv.lock
 .venv
 .ruff_cache/
+.mypy_cache/

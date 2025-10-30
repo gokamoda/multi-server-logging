@@ -16,7 +16,11 @@ remote_logger = RemoteLogger(
 async def calculate_square(number: int) -> int:
     """Calculate n^2 for a given integer."""
     result = number**2
-    remote_logger.log(f"Calculated square for {number}: {result}")
+    remote_logger.debug("Calculated square of %d: %d", number, result)
+    remote_logger.info("Square calculation completed.")
+    remote_logger.warning("This is just a demo warning message.")
+    remote_logger.error("This is just a \n demo error message.")
+    remote_logger.critical("This is just a demo critical message.")
     return result
 
 

@@ -3,6 +3,7 @@ Logging server on port 4002 that receives and displays logs.
 """
 
 import logging
+from logging import _nameToLevel
 from datetime import datetime
 from time import sleep
 
@@ -26,7 +27,7 @@ def init_logger():
     logger.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter(
-        "\n%(asctime)s %(message)s", datefmt="%Y/%m/%d %H:%M:%S"
+        "%(message)s"
     )
 
     formatter.converter = _custom_time
@@ -34,11 +35,12 @@ def init_logger():
     # console handler
     ch = RichHandler(
         rich_tracebacks=False,
-        show_time=False,
-        show_level=False,
+        show_time=True,
+        show_level=True,
         show_path=False,
+        markup=True,
     )
-    ch.setLevel(logging.INFO)
+    ch.setLevel(0)
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
@@ -54,8 +56,9 @@ async def receive_log(log: LogMessage):
     Receive and display log messages.
     Prints to terminal with timestamp.
     """
-    sleep(2) # Simulate processing delay
-    logger.info(f"[{log.server_name}] {log.message}")
+    level_str = log.level.upper()
+    level_int = _nameToLevel.get(level_str, logging.INFO)
+    logger.log(level_int, f"[{log.server_name}]\n{log.message}\n", *log.args)
     return {"status": "logged"}
 
 
